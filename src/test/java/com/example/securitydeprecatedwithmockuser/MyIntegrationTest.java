@@ -19,14 +19,21 @@ public class MyIntegrationTest {
     MockMvc mockMvc;
 
     @Test
-    public void publicUnauthorized() throws Exception {
+    public void pubUnauthorized() throws Exception {
         mockMvc.perform(get("/pub"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser()
-    public void publicAuthorized() throws Exception {
+    @WithMockUser(authorities = "ADMIN")
+    public void pubForbidden() throws Exception {
+        mockMvc.perform(get("/pub"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = "BASIC")
+    public void pubAuthorized() throws Exception {
         mockMvc.perform(get("/pub"))
                 .andExpect(status().isOk());
     }

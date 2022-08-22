@@ -21,8 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/secret").hasAnyAuthority("ADMIN")
-                .antMatchers("/pub").authenticated()
-                .anyRequest().denyAll()
+                .antMatchers("/pub").hasAnyAuthority("BASIC")
                 .and().httpBasic()
         ;
     }
