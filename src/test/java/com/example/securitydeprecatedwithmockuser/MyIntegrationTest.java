@@ -19,35 +19,22 @@ public class MyIntegrationTest {
     MockMvc mockMvc;
 
     @Test
-    public void unauthorized() throws Exception {
-        mockMvc.perform(get("/api/my"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser()
-    public void authorized() throws Exception {
-        mockMvc.perform(get("/api/my"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void secretUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/my/secret"))
+        mockMvc.perform(get("/a"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(authorities = "BASIC")
     public void secretForbidden() throws Exception {
-        mockMvc.perform(get("/api/my/secret"))
+        mockMvc.perform(get("/a"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
     public void secretAuthorized() throws Exception {
-        mockMvc.perform(get("/api/my/secret"))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/a"))
+                .andExpect(status().isOk()); // fails: is 403 Forbidden
     }
 }
